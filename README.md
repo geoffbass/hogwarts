@@ -1,4 +1,4 @@
-* Hogwarts
+# Hogwarts
 
 This is a simple Express/Sequelize backend for demonstrating the following concepts:
 - initializing and setting up a simple server with a database
@@ -13,20 +13,21 @@ The code in this repository should be considered a rough goal for starting from 
 - npm init
   - look at bare-bones package.json
   - add start script: "nodemon app.js"
-  - create app.js file
+- create app.js file
   - require express, install and save, initialize app
   - tell app to listen on 1337
   - try pinging server from browser, Cannot GET, how do we know it's working?
   - set up logging middleware, install/save/use volleyball
-  - app.get('/', (req, res) => res.send('Welcome to Hogwarts'));
+  - `app.get('/', (req, res) => res.send('Welcome to Hogwarts'));`
 
-  - create 'models' directory, w/ index and db files
-  - in db.js, require/save/install sequelize/pg/pg-hstore, initialize db
-    - const db = new Sequelize('postgres://localhost:5432/hogwarts');
-  - psql: create database hogwarts;
+- create 'models' directory, w/ index and db files
+- in db.js, require/save/install sequelize/pg/pg-hstore, initialize db
+  - `const db = new Sequelize('postgres://localhost:5432/hogwarts');`
+  - psql: `create database hogwarts;`
   - export db
-  - create house.js file
+- create house.js and student.js files
   - define and export House model:
+```
 		const House = db.define('house', {
   		name: {
     		type: Sequelize.STRING,
@@ -41,7 +42,9 @@ The code in this repository should be considered a rough goal for starting from 
     		defaultValue: 0
   		}
 		});
+```
   - define and export Student model:
+```
 		const Student = db.define('student', {
   		name: {
     		type: Sequelize.STRING,
@@ -52,7 +55,9 @@ The code in this repository should be considered a rough goal for starting from 
   		},
   		bio: Sequelize.TEXT
 		});
-  - define associations in index.js:
+```
+- define associations in index.js:
+```
 		const db = require('./db');
 		
 		const House = require('./house');
@@ -62,9 +67,11 @@ The code in this repository should be considered a rough goal for starting from 
 		House.hasMany(Student, {as: 'Members'});
 		
 		module.exports = db;
-  - copy seed.js file and run, show db after
+```
+- copy seed.js file and run, show db after
 
-  -define student birthdate virtual:
+-define student birthdate virtual:
+```
   	getterMethods: {
     	birthdate: function () {
       	if (this.bio) {
@@ -76,7 +83,9 @@ The code in this repository should be considered a rough goal for starting from 
 				return null;
 			}
   	}
-  - define student instance method:
+```
+- define student instance method:
+```
   	instanceMethods: {
     	grantPoints: function (numPoints) {
 				return this.getHouse()
@@ -87,7 +96,8 @@ The code in this repository should be considered a rough goal for starting from 
 				});
     	}
   	}
-  - define student hook:
+```
+- define student hook:
   	hooks: {
     	beforeCreate: function (student) {
      		if (!student.houseId) {
